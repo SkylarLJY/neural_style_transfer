@@ -9,6 +9,7 @@ import IPython.display as display
 
 style_weight = 1e-2
 content_weight = 1e4
+total_variation_weight = 30
 
 def tensor_to_image(tensor):
 	tensor = tensor*255
@@ -63,6 +64,7 @@ def train_step(image, extractor, opt, style_targets, content_targets):
 		with tf.GradientTape() as tape:
 			outputs = extractor(image)
 			loss = total_loss(outputs, style_targets, content_targets)
+			loss += total_variation_weight * tf.image.total_variation(image)
 		grad = tape.gradient(loss, image)
 		opt.apply_gradients([(grad, image)])
 		image.assign(clip_0_1(image))

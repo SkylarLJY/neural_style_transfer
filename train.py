@@ -7,7 +7,7 @@ from style_content_model import StyleContentModel
 
 epochs = 10
 step_per_epoch = 100
-	
+total_variation_weight = 30
 
 if __name__ == '__main__':
 	content = load_image('content.jpg')
@@ -34,13 +34,8 @@ if __name__ == '__main__':
 		for m in range (step_per_epoch):
 			step += 1
 			train_step(image, extractor, opt, style_targets, content_targets)
-			# train_style_transfer('content.jpg', 'style.jpeg')
 			print('.', end='')
 			sys.stdout.flush()
 		display.clear_output(wait=True)
-		tensor_to_image(image).show()
-
-		print('Train step: {}'.format(step))
-
-	end = time.time()
-	print('Total time: {:.1f}'.format(end-start))
+		print()
+	tensor_to_image(image).save("result.png")
